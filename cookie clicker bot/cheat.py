@@ -6,7 +6,7 @@ import time
 
 # gui.displayMousePosition()
 
-gui.PAUSE = 0
+gui.PAUSE = 0.1
 
 main_cookie_pos = (223, 455)
 
@@ -30,44 +30,60 @@ def click_cookie():
 
 def click_upgrade():
     try:
+        top = 221
+        bot = 793
+
         while True:
-            left = 1225
-            right = 1438
-            up = 360
-            height = 18
-            for i in range(5):
-                screenshot = ImageGrab.grab(
-                    bbox=(left, up + height * i, right, up + height * (i + 1))
-                ).convert(
-                    "L"
-                )  # to grayscale
-                screenshot.save(f"price_of_building {i}.png")
+            # left = 1225
+            # right = 1438
+            # up = 360
+            # height = 18
+            # for i in range(5):
+            #     screenshot = ImageGrab.grab(
+            #         bbox=(left, up + height * i, right, up + height * (i + 1))
+            #     ).convert(
+            #         "L"
+            #     )  # to grayscale
+            #     screenshot.save(f"price_of_building {i}.png")
 
-                result = ""
-                text: str = pytesseract.image_to_string("number_of_cookies.png", lang="eng")
-                for char in text:
-                    if char.isdigit():
-                        result += char
+            #     result = ""
+            #     text: str = pytesseract.image_to_string("number_of_cookies.png", lang="eng")
+            #     for char in text:
+            #         if char.isdigit():
+            #             result += char
 
-                try:
-                    result = int(result)
-                    print(result)
-                except Exception as e:
-                    print(f"error: {e}")
+            #     try:
+            #         result = int(result)
+            #         print(result)
+            #     except Exception as e:
+            #         print(f"error: {e}")
+
+            for y in range(bot, top, -60):
+                px = gui.pixel(1214 * 2, y*2)
+                print(px)
+                print(y)
+                while px[0] > 200:
+                    px = gui.pixel(1214 * 2, y*2)
+                    gui.click(1214, y)
+            gui.scroll(-2, 1214, 412)
+
     except gui.FailSafeException:
         print(f"Fail-safe triggered")
         return
 
 
 def click_golden_cookie():
-    while True:
-        try:
-            pos = gui.locateCenterOnScreen("golden_cookie.png", confidence=0.001)
-            print("click_golden_cookie: pos", pos)
-            gui.click(pos)
-        except:
-            continue
-
+    try:
+        while True:
+            try:
+                pos = gui.locateCenterOnScreen("golden_cookie.png", confidence=0.8)
+                print("click_golden_cookie: pos", pos)
+                gui.click(pos)
+            except:
+                continue
+    except gui.FailSafeException:
+        print(f"Fail-safe triggered")
+        return
 
 def read_data():
     try:
@@ -99,13 +115,13 @@ def main():
     click_cookie_process = multiprocessing.Process(target=click_cookie)
     click_upgrade_process = multiprocessing.Process(target=click_upgrade)
     click_golden_cookie_process = multiprocessing.Process(target=click_golden_cookie)
-    read_data_process = multiprocessing.Process(target=read_data)
+    # read_data_process = multiprocessing.Process(target=read_data)
 
     processes = [
         click_cookie_process,
         click_upgrade_process,
         click_golden_cookie_process,
-        read_data_process,
+        # read_data_process,
     ]
 
     for process in processes:
