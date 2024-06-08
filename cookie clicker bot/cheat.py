@@ -6,7 +6,7 @@ import time
 
 # gui.displayMousePosition()
 
-gui.PAUSE = 0.1
+gui.PAUSE = 0
 
 main_cookie_pos = (223, 455)
 
@@ -58,14 +58,25 @@ def click_upgrade():
             #     except Exception as e:
             #         print(f"error: {e}")
 
-            for y in range(bot, top, -60):
+            gui.scroll(-10, x=1214, y=412)
+            for y in range(bot, top, -30):
+                gui.moveTo(1214, y)
                 px = gui.pixel(1214 * 2, y*2)
                 print(px)
                 print(y)
                 while px[0] > 200:
                     px = gui.pixel(1214 * 2, y*2)
                     gui.click(1214, y)
-            gui.scroll(-2, 1214, 412)
+            gui.scroll(2, 1214, 412)
+            for y in range(bot, top, -50):
+                gui.moveTo(1214, y)
+                px = gui.pixel(1214 * 2, y*2)
+                print(px)
+                print(y)
+                while px[0] > 200:
+                    px = gui.pixel(1214 * 2, y*2)
+                    gui.click(1214, y)
+            
 
     except gui.FailSafeException:
         print(f"Fail-safe triggered")
@@ -73,17 +84,17 @@ def click_upgrade():
 
 
 def click_golden_cookie():
-    try:
-        while True:
-            try:
-                pos = gui.locateCenterOnScreen("golden_cookie.png", confidence=0.8)
-                print("click_golden_cookie: pos", pos)
-                gui.click(pos)
-            except:
-                continue
-    except gui.FailSafeException:
-        print(f"Fail-safe triggered")
-        return
+    while True:
+        try:
+            pos = gui.locateCenterOnScreen("golden_cookie.png", confidence=0.45)
+            print("click_golden_cookie: pos", pos)
+            gui.click(pos.x/2, pos.y/2)
+        except gui.FailSafeException:
+            print(f"Fail-safe triggered") 
+            return
+        except:
+            print('error finding gold cookie')
+            continue
 
 def read_data():
     try:
@@ -115,12 +126,12 @@ def main():
     click_cookie_process = multiprocessing.Process(target=click_cookie)
     click_upgrade_process = multiprocessing.Process(target=click_upgrade)
     click_golden_cookie_process = multiprocessing.Process(target=click_golden_cookie)
-    # read_data_process = multiprocessing.Process(target=read_data)
+    read_data_process = multiprocessing.Process(target=read_data)
 
     processes = [
         click_cookie_process,
         click_upgrade_process,
-        click_golden_cookie_process,
+        # click_golden_cookie_process,
         # read_data_process,
     ]
 
