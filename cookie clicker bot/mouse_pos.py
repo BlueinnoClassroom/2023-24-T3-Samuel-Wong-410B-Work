@@ -1,5 +1,5 @@
 import pyautogui as gui
-# gui.displayMousePosition()
+gui.displayMousePosition()
 
 
 x, y = 1219, 409

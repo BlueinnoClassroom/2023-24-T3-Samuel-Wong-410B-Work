@@ -34,48 +34,26 @@ def click_upgrade():
         bot = 793
 
         while True:
-            # left = 1225
-            # right = 1438
-            # up = 360
-            # height = 18
-            # for i in range(5):
-            #     screenshot = ImageGrab.grab(
-            #         bbox=(left, up + height * i, right, up + height * (i + 1))
-            #     ).convert(
-            #         "L"
-            #     )  # to grayscale
-            #     screenshot.save(f"price_of_building {i}.png")
-
-            #     result = ""
-            #     text: str = pytesseract.image_to_string("number_of_cookies.png", lang="eng")
-            #     for char in text:
-            #         if char.isdigit():
-            #             result += char
-
-            #     try:
-            #         result = int(result)
-            #         print(result)
-            #     except Exception as e:
-            #         print(f"error: {e}")
-
-            gui.scroll(-10, x=1214, y=412)
-            for y in range(bot, top, -30):
+            gui.scroll(-10, x=1220, y=412)
+            for y in range(bot, top, -20):
+                gui.moveTo(1214, y)
+                px = gui.pixel(1214 * 2, y * 2)
+                print(px)
+                print(y)
+                while px[0] > 200:
+                    px = gui.pixel(1214 * 2, y * 2)
+                    for i in range(20):
+                        gui.click(1214, y)
+            gui.scroll(5, 1214, 412)
+            for y in range(bot, top, -20):
                 gui.moveTo(1214, y)
                 px = gui.pixel(1214 * 2, y*2)
                 print(px)
                 print(y)
                 while px[0] > 200:
-                    px = gui.pixel(1214 * 2, y*2)
-                    gui.click(1214, y)
-            gui.scroll(2, 1214, 412)
-            for y in range(bot, top, -50):
-                gui.moveTo(1214, y)
-                px = gui.pixel(1214 * 2, y*2)
-                print(px)
-                print(y)
-                while px[0] > 200:
-                    px = gui.pixel(1214 * 2, y*2)
-                    gui.click(1214, y)
+                    px = gui.pixel(1214 * 2, y * 2)
+                    for i in range(20):
+                        gui.click(1214, y)
             
 
     except gui.FailSafeException:
@@ -129,7 +107,7 @@ def main():
     read_data_process = multiprocessing.Process(target=read_data)
 
     processes = [
-        click_cookie_process,
+        # click_cookie_process,
         click_upgrade_process,
         # click_golden_cookie_process,
         # read_data_process,
