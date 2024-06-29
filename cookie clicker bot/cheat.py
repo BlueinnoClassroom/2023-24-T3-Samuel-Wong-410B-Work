@@ -107,9 +107,9 @@ def main():
     read_data_process = multiprocessing.Process(target=read_data)
 
     processes = [
-        # click_cookie_process,
+        click_cookie_process,
         click_upgrade_process,
-        # click_golden_cookie_process,
+        click_golden_cookie_process,
         # read_data_process,
     ]
 
